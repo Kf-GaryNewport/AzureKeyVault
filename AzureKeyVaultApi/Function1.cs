@@ -51,61 +51,61 @@ namespace AzureKeyVaultApi
                 : req.CreateResponse(HttpStatusCode.OK, "Hello " + name);
         }
 
-        [FunctionName("Function2")]
-        public static async Task<HttpResponseMessage> Run2([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]HttpRequestMessage req, TraceWriter log)
-        {
-            log.Info("C# HTTP trigger function processed a request.");
+        //[FunctionName("Function2")]
+        //public static async Task<HttpResponseMessage> Run2([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]HttpRequestMessage req, TraceWriter log)
+        //{
+        //    log.Info("C# HTTP trigger function processed a request.");
 
-            //SecretRequest secretRequest = new SecretRequest();
-            //secretRequest.Secret = "applicationUser";
+        //    //SecretRequest secretRequest = new SecretRequest();
+        //    //secretRequest.Secret = "applicationUser";
 
-            SecretRequest secretRequest = await req.Content.ReadAsAsync<SecretRequest>();
+        //    SecretRequest secretRequest = await req.Content.ReadAsAsync<SecretRequest>();
 
-            if (string.IsNullOrEmpty(secretRequest.Secret))
-                return req.CreateResponse(HttpStatusCode.BadRequest, "Request does not contain a valid Secret.");
+        //    if (string.IsNullOrEmpty(secretRequest.Secret))
+        //        return req.CreateResponse(HttpStatusCode.BadRequest, "Request does not contain a valid Secret.");
 
-            log.Info($"GetKeyVaultSecret request received for secret {secretRequest.Secret}");
+        //    log.Info($"GetKeyVaultSecret request received for secret {secretRequest.Secret}");
 
-            var serviceTokenProvider = new AzureServiceTokenProvider();
-            log.Info($"PrincipalUsed {serviceTokenProvider.PrincipalUsed}");
+        //    var serviceTokenProvider = new AzureServiceTokenProvider();
+        //    log.Info($"PrincipalUsed {serviceTokenProvider.PrincipalUsed}");
 
-            var keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(serviceTokenProvider.KeyVaultTokenCallback));
+        //    var keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(serviceTokenProvider.KeyVaultTokenCallback));
 
-            var secretUri = SecretUri(secretRequest.Secret);
-            log.Info($"Key Vault URI {secretUri} generated");
-            SecretBundle secretValue;
-            try
-            {
-                secretValue = await keyVaultClient.GetSecretAsync(secretUri);
-            }
-            catch (KeyVaultErrorException kex)
-            {
-                return req.CreateResponse(HttpStatusCode.NotFound, $"{kex.Message}");
-            }
-            log.Info("Secret Value retrieved from KeyVault. {secretValue.Value}");
+        //    var secretUri = SecretUri(secretRequest.Secret);
+        //    log.Info($"Key Vault URI {secretUri} generated");
+        //    SecretBundle secretValue;
+        //    try
+        //    {
+        //        secretValue = await keyVaultClient.GetSecretAsync(secretUri);
+        //    }
+        //    catch (KeyVaultErrorException kex)
+        //    {
+        //        return req.CreateResponse(HttpStatusCode.NotFound, $"{kex.Message}");
+        //    }
+        //    log.Info("Secret Value retrieved from KeyVault. {secretValue.Value}");
 
-            var secretResponse = new SecretResponse { Secret = secretRequest.Secret, Value = secretValue.Value };
+        //    var secretResponse = new SecretResponse { Secret = secretRequest.Secret, Value = secretValue.Value };
 
-            return new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(JsonConvert.SerializeObject(secretResponse), Encoding.UTF8, "application/json")
-            };
-        }
+        //    return new HttpResponseMessage(HttpStatusCode.OK)
+        //    {
+        //        Content = new StringContent(JsonConvert.SerializeObject(secretResponse), Encoding.UTF8, "application/json")
+        //    };
+        //}
 
-        public class SecretRequest
-        {
-            public string Secret { get; set; }
-        }
+        //public class SecretRequest
+        //{
+        //    public string Secret { get; set; }
+        //}
 
-        public class SecretResponse
-        {
-            public string Secret { get; set; }
-            public string Value { get; set; }
-        }
+        //public class SecretResponse
+        //{
+        //    public string Secret { get; set; }
+        //    public string Value { get; set; }
+        //}
 
-        public static string SecretUri(string secret)
-        {
-            return $"{ConfigurationManager.AppSettings["KeyVaultUri"]}secrets/{secret}";
-        }
+        //public static string SecretUri(string secret)
+        //{
+        //    return $"{ConfigurationManager.AppSettings["KeyVaultUri"]}secrets/{secret}";
+        //}
     }
 }

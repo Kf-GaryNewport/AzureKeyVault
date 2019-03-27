@@ -189,14 +189,11 @@
           "dependsOn": [
             "[resourceId('Microsoft.Web/sites', variables('var_azf_name'))]",
             "[resourceId('Microsoft.KeyVault/vaults/', variables('var_kv_name'))]",
-            "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('var_kv_name'), 'applicationuser')]",
-            "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('var_kv_name'), 'AnotherSecret')]"
+            "secretsCopy"
           ],
           "name": "appsettings",
           "properties": {
-            "WEBSITE_ENABLE_SYNC_UPDATE_SITE": "true",
-            "AnotherSecret": "[concat('@Microsoft.KeyVault(SecretUri=', reference('AnotherSecret').secretUriWithVersion, ')')]",
-            "applicationuser": "[concat( '@Microsoft.KeyVault(SecretUri=', reference('applicationuser').secretUriWithVersion, ')')]"
+            "WEBSITE_ENABLE_SYNC_UPDATE_SITE": "true"
           },
           "tags": {
             "displayName": "AppSettings"
@@ -236,7 +233,14 @@
                 "Delete",
                 "Recover",
                 "Backup",
-                "Restore"
+                "Restore",
+                "Decrypt",
+                "Encrypt",
+                "UnwrapKey",
+                "WrapKey",
+                "Verify",
+                "Sign",
+                "Purge"
               ],
               "secrets": [
                 "Get",
@@ -245,7 +249,8 @@
                 "Delete",
                 "Recover",
                 "Backup",
-                "Restore"
+                "Restore",
+                "Purge"
               ],
               "certificates": [
                 "Get",
@@ -262,7 +267,8 @@
                 "GetIssuers",
                 "ListIssuers",
                 "SetIssuers",
-                "DeleteIssuers"
+                "DeleteIssuers",
+                "Purge"
               ]
             }
           }

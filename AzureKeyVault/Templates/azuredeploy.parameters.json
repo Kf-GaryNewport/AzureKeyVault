@@ -24,6 +24,10 @@
           {
             "secretName": "AnotherSecret",
             "secretValue": "OVERWRITTEN BY VSTS"
+          },
+          {
+            "secretName": "fred",
+            "secretValue": "OVERWRITTEN BY VSTS"
           }
         ]
       }

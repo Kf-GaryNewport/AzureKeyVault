@@ -193,7 +193,10 @@
           ],
           "name": "appsettings",
           "properties": {
-            "WEBSITE_ENABLE_SYNC_UPDATE_SITE": "true"
+            "WEBSITE_ENABLE_SYNC_UPDATE_SITE": "true",
+            "applicationuser": "[concat('@Microsoft.KeyVault(SecretUri=', reference('applicationuser').secretUriWithVersion, ')')]",
+            "AnotherSecret": "[concat( '@Microsoft.KeyVault(SecretUri=', reference('AnotherSecret').secretUriWithVersion, ')')]",
+            "fred": "[concat( '@Microsoft.KeyVault(SecretUri=', reference('fred').secretUriWithVersion, ')')]"
           },
           "tags": {
             "displayName": "AppSettings"
